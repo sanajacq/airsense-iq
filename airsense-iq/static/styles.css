@@ -1,0 +1,399 @@
+/* ── CPCB Official Colour Scale ─────────────────── */
+:root {
+    --cpcb-good:         #00B050;
+    --cpcb-satisfactory: #70AD47;
+    --cpcb-moderate:     #FFC000;
+    --cpcb-poor:         #FF6600;
+    --cpcb-very-poor:    #E53935;
+    --cpcb-severe:       #9B0000;
+
+    --bg-color:       #1a2f4a;
+    --card-bg:        #ffffff;
+    --text-main:      #1a2a3a;
+    --text-muted:     #546e7a;
+    --border-color:   #e0e8f0;
+
+    --blue-dark:      #0d2137;
+    --blue-primary:   #1565C0;
+    --blue-light:     #e8f0fe;
+    --teal-primary:   #00796B;
+    --teal-light:     #e0f2f1;
+    --red-light:      #fdecea;
+    --orange-light:   #fff3e0;
+}
+
+/* ── BASE ────────────────────────────────────────── */
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #1a2f4a 0%, #0d1f33 100%);
+    color: var(--text-main);
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* ── HEADER ──────────────────────────────────────── */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(90deg, #0d2137 0%, #1565C0 100%);
+    padding: 16px 24px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+    margin-bottom: 22px;
+}
+
+.dashboard-title h1 {
+    margin: 0;
+    font-size: 21px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.dashboard-title p {
+    margin: 4px 0 0 0;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+}
+
+.controls select {
+    padding: 9px 14px;
+    border-radius: 7px;
+    border: 1px solid rgba(255,255,255,0.3);
+    font-size: 13.5px;
+    font-weight: 500;
+    background: rgba(255,255,255,0.12);
+    cursor: pointer;
+    outline: none;
+    color: #ffffff;
+    transition: background 0.2s;
+}
+.controls select:hover {
+    background: rgba(255,255,255,0.2);
+}
+.controls select option {
+    background: #1565C0;
+    color: #fff;
+}
+
+/* ── GRID ────────────────────────────────────────── */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 18px;
+}
+
+/* ── CARD BASE ───────────────────────────────────── */
+.card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 22px 24px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.16);
+}
+
+.card-header {
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: var(--text-muted);
+    margin-top: 0;
+    margin-bottom: 18px;
+    border-bottom: 1.5px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+/* ── 1. RRI CARD ─────────────────────────────────── */
+.rri-card {
+    grid-column: span 4;
+    text-align: center;
+    border-top: 6px solid var(--cpcb-very-poor);
+    background: linear-gradient(160deg, #fff5f5 0%, #ffffff 70%);
+}
+
+.rri-status {
+    font-size: 46px;
+    font-weight: 800;
+    color: var(--cpcb-very-poor);
+    margin: 10px 0 8px;
+    line-height: 1;
+    letter-spacing: -1px;
+    background: #fdecea;
+    border-radius: 8px;
+    padding: 10px 0;
+    box-shadow: 0 2px 8px rgba(229,57,53,0.15);
+}
+
+.aqi-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.sub-text {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 14px;
+    line-height: 1.55;
+}
+
+/* ── 2. ALERTS CARD ──────────────────────────────── */
+.alerts-card {
+    grid-column: span 8;
+    background: #ffffff;
+}
+
+.alert-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.alert-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 13px 15px;
+    background: #f8fbff;
+    border-left: 4px solid var(--blue-primary);
+    margin-bottom: 11px;
+    border-radius: 0 7px 7px 0;
+    transition: background 0.2s;
+}
+.alert-item:hover {
+    background: var(--blue-light);
+}
+.alert-item:last-child {
+    margin-bottom: 0;
+}
+
+.alert-icon {
+    font-size: 19px;
+    margin-right: 13px;
+    margin-top: 1px;
+}
+
+.alert-content h4 {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--blue-primary);
+}
+
+.alert-content p {
+    margin: 0;
+    font-size: 13.5px;
+    color: var(--text-main);
+    line-height: 1.5;
+}
+
+/* ── 3. ADVISORY CARD ────────────────────────────── */
+.advisory-card {
+    grid-column: span 12;
+    background: linear-gradient(120deg, #e8f5e9 0%, #f1fdf4 60%, #ffffff 100%);
+    border-left: 5px solid var(--cpcb-good);
+}
+
+.advisory-text {
+    font-size: 15.5px;
+    font-weight: 500;
+    color: #1b5e20;
+    line-height: 1.7;
+}
+
+/* ── 4. CHART CARD ───────────────────────────────── */
+.chart-card {
+    grid-column: span 12;
+    min-height: 320px;
+    background: #ffffff;
+}
+
+.chart-placeholder {
+    width: 100%;
+    height: 240px;
+    background: linear-gradient(180deg, #f0f4ff 0%, #f8faff 100%);
+    border: 2px dashed #aabfe8;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--blue-primary);
+    gap: 8px;
+}
+
+/* ── CHATBOT ─────────────────────────────────────── */
+.chatbot {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    background: #fff;
+    border: 1px solid #c5d5e8;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    transition: height 0.3s ease;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(13,33,55,0.22);
+}
+
+.chatbot.minimized {
+    height: 44px;
+    width: 210px;
+}
+
+.chatbot.open {
+    height: 480px;
+    width: 300px;
+}
+
+.chat-header {
+    padding: 11px 16px;
+    background: linear-gradient(90deg, #0d2137, #1565C0);
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    text-align: center;
+    cursor: pointer;
+    letter-spacing: 0.2px;
+}
+.chat-header:hover {
+    background: linear-gradient(90deg, #1565C0, #1976D2);
+}
+
+.chat-content {
+    display: none;
+}
+.chatbot.open .chat-content {
+    display: block;
+}
+
+#chatbox {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background: #f7f9fc;
+}
+
+.user-message {
+    background: var(--blue-light);
+    color: var(--blue-primary);
+    padding: 7px 10px;
+    margin: 5px 0;
+    border-radius: 6px;
+    font-size: 13.5px;
+    font-weight: 500;
+    border-left: 3px solid var(--blue-primary);
+}
+
+#userInput {
+    width: calc(100% - 62px);
+    padding: 8px 10px;
+    border: 1px solid #c5d5e8;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+}
+#userInput:focus {
+    border-color: var(--blue-primary);
+}
+
+.chatbot button {
+    width: 52px;
+    margin: 0 4px;
+    padding: 8px 0;
+    background: var(--blue-primary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.chatbot button:hover {
+    background: #1976D2;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 1024px) {
+    .rri-card    { grid-column: span 5; }
+    .alerts-card { grid-column: span 7; }
+}
+
+@media (max-width: 768px) {
+    .rri-card, .alerts-card, .chart-card, .advisory-card {
+        grid-column: span 12;
+    }
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    body { padding: 12px; }
+}
+/* ══ NEW ADDITIONS ONLY — original styles above untouched ══ */
+
+/* Tab nav */
+.tab-nav { display:flex; gap:4px; padding:0 0 16px; }
+.tab-btn { background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.7); padding:9px 18px; border-radius:7px; font-size:13px; font-weight:600; cursor:pointer; transition:all .2s; }
+.tab-btn:hover { background:rgba(255,255,255,0.18); color:#fff; }
+.tab-btn.active { background:rgba(255,255,255,0.95); color:#1565C0; }
+.tab-content { display:none; }
+.tab-content.active { display:block; }
+
+/* Pollutant tab pills */
+.pollutant-tabs { display:flex; gap:4px; flex-wrap:wrap; }
+.ptab { background:#f0f4ff; border:1px solid #c5d5e8; border-radius:5px; padding:3px 9px; font-size:11px; font-weight:600; color:#546e7a; cursor:pointer; transition:all .15s; }
+.ptab:hover { background:#e8f0fe; color:#1565C0; }
+.ptab.active { background:#1565C0; color:#fff; border-color:#1565C0; }
+
+/* Info button */
+.info-btn { font-size:10px; font-weight:600; color:#1565C0; background:#e8f0fe; border:1px solid #a8c7fa; border-radius:5px; padding:2px 7px; cursor:pointer; margin-left:6px; text-transform:none; letter-spacing:0; vertical-align:middle; }
+.info-btn:hover { background:#1565C0; color:#fff; }
+
+/* AQI bands row */
+.aqi-bands-row { display:flex; gap:3px; flex-wrap:wrap; justify-content:center; margin-top:4px; }
+.band { font-size:9px; font-weight:700; padding:2px 5px; border-radius:4px; color:#fff; }
+
+/* 7-day chart card */
+.chart-card { grid-column:span 12; min-height:200px; background:#ffffff; }
+
+/* Bot message */
+.bot-message { background:#f0f4ff; color:#1a2a3a; padding:7px 10px; margin:5px 0; border-radius:6px; font-size:13px; line-height:1.5; border-left:3px solid #c5d5e8; }
+
+/* Accuracy tables */
+.acc-table { width:100%; border-collapse:collapse; font-size:12.5px; }
+.acc-table th { background:#1565C0; color:#fff; padding:8px 12px; text-align:left; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; }
+.acc-table td { padding:7px 12px; border-bottom:1px solid #e0e8f0; }
+.acc-table tr:nth-child(even) td { background:#f8fbff; }
+.acc-great { color:#1b5e20; font-weight:700; }
+.acc-ok    { color:#e65100; font-weight:700; }
+.acc-poor  { color:#b71c1c; font-weight:700; }
+
+/* Past data button on AQI gauge card */
+.aqi-bands-row { display:flex; gap:3px; flex-wrap:wrap; justify-content:center; margin-top:4px; }
+.aqi-bands-row .band { font-size:9px; font-weight:700; padding:2px 5px; border-radius:4px; color:#fff; }
+
+/* Rich Leaflet popup */
+.custom-popup .leaflet-popup-content-wrapper {
+    border-radius: 10px;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+.custom-popup .leaflet-popup-content {
+    margin: 10px 14px;
+}
