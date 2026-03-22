@@ -535,10 +535,6 @@ def api_admin_add():
         traceback.print_exc()
         return jsonify({"status":"error","message":str(e)}),500
 
-if __name__ == "__main__":
-    print("\n🌍 AirSense-IQ Server v3.0  →  http://localhost:5000\n")
-    app.run(debug=True, port=5000)
-
 # ── API: Date Detail (for Past Data lookup) ───────────────────
 @app.route("/api/date_detail")
 def api_date_detail():
@@ -583,7 +579,7 @@ def api_date_detail():
             return Response(_json.dumps({"status":"error","message":"No data found for "+date_str+" at "+station}),
                             mimetype="application/json"), 404
 
-        row  = sub.iloc[0]
+        row   = sub.iloc[0]
         pm25  = _safe(row["PM2.5"])
         pm10  = _safe(row["PM10"])
         no2   = _safe(row["NO2"])
@@ -616,7 +612,6 @@ def api_date_detail():
             "rh":        rh,
             "ws":        ws,
         }
-        # Use json.dumps directly so we control NaN handling completely
         return Response(_json.dumps(result), mimetype="application/json")
 
     except Exception as e:
@@ -624,4 +619,7 @@ def api_date_detail():
         return Response(_json.dumps({"status":"error","message":str(e)}),
                         mimetype="application/json"), 500
 
-        return jsonify({"status":"error","message":str(e)}), 500
+
+if __name__ == "__main__":
+    print("\n🌍 AirSense-IQ Server v3.0  →  http://localhost:5000\n")
+    app.run(debug=True, port=5000)
