@@ -1018,52 +1018,52 @@ async function loadPastData() {
     res.innerHTML = '<div style="text-align:center;padding:20px;color:#546e7a">Loading...</div>';
 
     try {
-        var r    = await fetch('/api/historical_aqi?station='+encodeURIComponent(station)+'&days=9999');
-        var json = await r.json();
-        if (json.status !== 'ok') throw new Error(json.message);
+        // Call /api/date_detail directly — it is NaN-safe and returns all fields at top level
+        var r  = await fetch('/api/date_detail?date='+encodeURIComponent(date)+'&station='+encodeURIComponent(station));
+        var text = await r.text();   // read as text first to avoid JSON.parse crash on NaN
+        var j;
+        try { j = JSON.parse(text); }
+        catch(parseErr) {
+            // Attempt to sanitise bare NaN / Infinity values that Python may have emitted
+            var cleaned = text.replace(/:\s*NaN/g, ': null').replace(/:\s*Infinity/g, ': null').replace(/:\s*-Infinity/g, ': null');
+            j = JSON.parse(cleaned);
+        }
 
-        // Find the matching date
-        var records = json.data || [];
-        var match   = records.find(function(r){ return r.date === date; });
-
-        if (!match) {
-            res.innerHTML = '<div style="text-align:center;padding:20px;color:#E53935">No data available for '+date+' at '+station+'.<br><small>Dataset covers Jan 2022 - Mar 2026.</small></div>';
+        if (j.status !== 'ok') {
+            res.innerHTML = '<div style="text-align:center;padding:20px;color:#E53935">'
+                + (j.message || 'No data found for '+date+' at '+station+'.')
+                + '<br><small>Dataset covers Jan 2022 – Mar 2026.</small></div>';
             return;
         }
 
-        var aqi_col = AQI_COLORS[match.category] || '#546e7a';
-
-        // Also fetch full pollutant detail for that date
-        var r2   = await fetch('/api/date_detail?date='+date+'&station='+encodeURIComponent(station));
-        var j2   = await r2.json();
-        var poll = j2.status === 'ok' ? j2.data : {};
+        var aqi_col = AQI_COLORS[j.category] || '#546e7a';
 
         res.innerHTML =
             '<div style="display:flex;align-items:center;gap:20px;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid #e0e8f0">'
             +'<div style="text-align:center">'
-            +'<div style="font-size:52px;font-weight:800;color:'+aqi_col+';line-height:1">'+match.actual_aqi+'</div>'
-            +'<div style="font-size:15px;font-weight:700;color:'+aqi_col+'">'+match.category+'</div>'
+            +'<div style="font-size:52px;font-weight:800;color:'+aqi_col+';line-height:1">'+j.aqi+'</div>'
+            +'<div style="font-size:15px;font-weight:700;color:'+aqi_col+'">'+j.category+'</div>'
             +'<div style="font-size:11px;color:#546e7a;margin-top:2px">Air Quality Index</div>'
             +'</div>'
             +'<div>'
             +'<div style="font-size:16px;font-weight:700;color:#1a2a3a;margin-bottom:4px">'+station+'</div>'
             +'<div style="font-size:14px;color:#546e7a">'+date+'</div>'
-            +(poll.prominent ? '<div style="font-size:13px;color:#546e7a;margin-top:4px">Prominent Pollutant: <strong>'+poll.prominent+'</strong></div>' : '')
+            +(j.prominent ? '<div style="font-size:13px;color:#546e7a;margin-top:4px">Prominent Pollutant: <strong>'+j.prominent+'</strong></div>' : '')
             +'</div>'
             +'</div>'
             // Pollutant grid
             +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">'
-            +buildPollCard('PM2.5',    poll.pm25,   'µg/m³', 60)
-            +buildPollCard('PM10',     poll.pm10,   'µg/m³', 100)
-            +buildPollCard('NO₂',      poll.no2,    'µg/m³', 80)
-            +buildPollCard('SO₂',      poll.so2,    'µg/m³', 80)
-            +buildPollCard('CO',       poll.co,     'mg/m³', 4)
-            +buildPollCard('Ozone',    poll.ozone,  'µg/m³', 100)
+            +buildPollCard('PM2.5',  j.pm25,  'µg/m³', 60)
+            +buildPollCard('PM10',   j.pm10,  'µg/m³', 100)
+            +buildPollCard('NO₂',    j.no2,   'µg/m³', 80)
+            +buildPollCard('SO₂',    j.so2,   'µg/m³', 80)
+            +buildPollCard('CO',     j.co,    'mg/m³', 4)
+            +buildPollCard('Ozone',  j.ozone, 'µg/m³', 100)
             +'</div>'
-            +(poll.temp!=null ? '<div style="display:flex;gap:16px;margin-top:12px;padding-top:12px;border-top:1px solid #e0e8f0;font-size:12px;color:#546e7a">'
-            +'<span>🌡 Temp: <strong>'+poll.temp+'°C</strong></span>'
-            +'<span>💧 RH: <strong>'+poll.rh+'%</strong></span>'
-            +'<span>💨 Wind: <strong>'+poll.ws+' m/s</strong></span>'
+            +(j.temp != null ? '<div style="display:flex;gap:16px;margin-top:12px;padding-top:12px;border-top:1px solid #e0e8f0;font-size:12px;color:#546e7a">'
+            +'<span>🌡 Temp: <strong>'+j.temp+'°C</strong></span>'
+            +'<span>💧 RH: <strong>'+j.rh+'%</strong></span>'
+            +'<span>💨 Wind: <strong>'+j.ws+' m/s</strong></span>'
             +'</div>' : '');
     } catch(e) {
         document.getElementById('past-results').innerHTML = '<div style="color:#E53935;padding:12px">Error: '+e.message+'</div>';
